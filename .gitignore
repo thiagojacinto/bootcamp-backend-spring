@@ -1,8 +1,10 @@
 *.DS_Store
 
 HELP.md
+bin/
 target/
 !.mvn/wrapper/maven-wrapper.jar
+src/main/resources/application.properties
 !**/src/main/**/target/
 !**/src/test/**/target/
 pom.xml.tag

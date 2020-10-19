@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT -jar target/bootcamp-backend-spring-1.0.0-SNAPSHOT.jar --spring.datasource.url=${JDBC_DATABASE_URL}
