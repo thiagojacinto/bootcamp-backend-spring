@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.service</groupId>
 	<artifactId>ecommerce</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-pre-alpha</version>
 	<name>ecommerce</name>
 	<description>Bootcamp Backend final project using Spring Boot</description>
 
