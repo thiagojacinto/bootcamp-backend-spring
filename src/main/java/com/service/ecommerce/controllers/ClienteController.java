@@ -30,7 +30,7 @@ public class ClienteController {
 	/**
 	 * Adiciona novo cliente.
 	 * @param novoCliente
-	 * @return
+	 * @return {@code Cliente} clienteCadastrado
 	 */
 	@PostMapping()
 	@ResponseStatus(code = HttpStatus.CREATED)
@@ -81,7 +81,7 @@ public class ClienteController {
 	 * Modifica dados de um cliente cadastrado.
 	 * @param {@code Integer} clienteId
 	 * @param {@code Cliente} clienteAlterado
-	 * @return Cliente
+	 * @return Cliente clienteModificado
 	 */
 	@PutMapping(path = "/{clienteId}")
 	@ResponseStatus(code = HttpStatus.OK)
