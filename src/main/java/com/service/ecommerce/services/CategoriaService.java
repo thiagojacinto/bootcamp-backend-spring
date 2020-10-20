@@ -1,5 +1,6 @@
 package com.service.ecommerce.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,14 @@ public class CategoriaService implements ServicoBase<CategoriaRepository, Catego
 
 	@Override
 	public Categoria cadastrar(Categoria novoItem) {
+		
+		List<Categoria> categoriaHomonima = categoriaRepository.findByNome(novoItem.getNome());
+		
+		if (categoriaHomonima.size() > 0) {
+			throw new DomainException("Categoria já registrada com nome: " + novoItem.getNome());
+			
+		}
+		
 		return categoriaRepository.save(novoItem);
 	}
 
