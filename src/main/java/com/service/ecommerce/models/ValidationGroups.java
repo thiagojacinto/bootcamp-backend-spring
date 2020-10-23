@@ -4,5 +4,5 @@ public interface ValidationGroups {
 
 	public interface CadastroClienteValidation {}
 	public interface CadastroCategoriaValidation {}
-	
+	public interface RegisterValidation {}
 }
