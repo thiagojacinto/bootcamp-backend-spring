@@ -21,7 +21,7 @@ public class Produto {
 	@Size(max = 200)
 	private String nome;
 	private String descricao;
-	private Double preco_unitario;
+	private Double precoUnitario;
 	
 	@Size(max = 20)
 	private String unidade;
@@ -43,7 +43,7 @@ public class Produto {
 	public Produto(String nome, String descricao, Double preco_unitario) {
 		this.nome = nome;
 		this.descricao = descricao;
-		this.preco_unitario = preco_unitario;
+		this.precoUnitario = preco_unitario;
 	}
 
 	/**
@@ -91,15 +91,15 @@ public class Produto {
 	/**
 	 * @return the preco_unitario
 	 */
-	public Double getPreco_unitario() {
-		return preco_unitario;
+	public Double getPrecoUnitario() {
+		return precoUnitario;
 	}
 
 	/**
 	 * @param preco_unitario the preco_unitario to set
 	 */
-	public void setPreco_unitario(Double preco_unitario) {
-		this.preco_unitario = preco_unitario;
+	public void setPrecoUnitario(Double preco_unitario) {
+		this.precoUnitario = preco_unitario;
 	}
 
 	/**
@@ -202,9 +202,9 @@ public class Produto {
 			builder.append(descricao);
 			builder.append(", ");
 		}
-		if (preco_unitario != null) {
+		if (precoUnitario != null) {
 			builder.append("precoUnitario = ");
-			builder.append(preco_unitario);
+			builder.append(precoUnitario);
 			builder.append(", ");
 		}
 		if (unidade != null) {
