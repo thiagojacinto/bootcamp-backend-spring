@@ -1,6 +1,7 @@
 package com.service.ecommerce.services;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,16 @@ public class FAQService implements ServicoBase<FAQRepository, FAQ>{
 	private FAQRepository faqRepository;
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	/**
+	 * Lista as FAQs a partir do Produto vinculado.
+	 * @param produtoID {@code Integer}
+	 * @return {@code List<FAQ>}
+	 */
+	public List<FAQ> listarPorProduto(Integer produtoID) {
+		
+		return faqRepository.findByProduto(produtoID);
+	}
 
 	@Override
 	public Iterable<FAQ> listarTodos() {
@@ -71,7 +82,5 @@ public class FAQService implements ServicoBase<FAQRepository, FAQ>{
 		
 		faqRepository.deleteById(peloId);
 	}
-	
-	
 	
 }
