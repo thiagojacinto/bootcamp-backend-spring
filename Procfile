@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/ecommerce-0.3.0-alpha.jar --spring.datasource.url=${JDBC_DATABASE_URL}
+web: java -Dserver.port=$PORT -jar target/ecommerce-0.4.0-alpha.jar --spring.datasource.url=${JDBC_DATABASE_URL}
