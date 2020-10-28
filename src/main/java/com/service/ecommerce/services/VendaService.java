@@ -37,9 +37,11 @@ public class VendaService {
 	 */
 	public List<Venda> listarPorClienteOrdenadoPorData(Integer clienteID, Integer pagina, Integer itensPorPagina) {
 		
+		Cliente clienteValidado = validarCliente(clienteID);
+		
 		Pageable paginacao = PageRequest.of(pagina, itensPorPagina);
 		
-		return vendas.findAllByClienteOrderByDatahoraDesc(clienteID, paginacao);
+		return vendas.findByCliente_IdOrderByDatahoraDesc(clienteValidado.getId(), paginacao);
 	}
 	
 	/**
@@ -53,16 +55,21 @@ public class VendaService {
 		
 		Pageable paginacao = PageRequest.of(pagina, itensPorPagina);
 		
-		return vendas.findAllByClienteOrderByValorTotalDesc(clienteID, paginacao);
+		return vendas.findByCliente_IdOrderByValorTotalDesc(clienteID, paginacao);
 	}
 	
+	/**
+	 * Lista de Vendas por Forma de Pagamento.
+	 * @param formaPagamentoID {@code Integer}
+	 * @return {@code List<Venda>}
+	 */
 	public List<Venda> listarPorFormaDePagamento(Integer formaPagamentoID) {
 		
 		if (formaPagamentoID == null) {
 			throw new DomainException("ID inválido. Verifique o ID e tente novamente.");
 		}
 		
-		return vendas.findAllByFormaPagamento(formaPagamentoID);
+		return vendas.findByFormaPagamento_Id(formaPagamentoID);
 		
 	}
 	
@@ -98,9 +105,9 @@ public class VendaService {
 				.findById(vendaDTO.getId())
 				.map(venda -> {
 					
-					venda.setCliente(vendaConvertida.getCliente());
-					venda.setFormaPagamento(vendaConvertida.getFormaPagamento());
-					venda.setValorTotal(vendaConvertida.getValorTotal());
+					if (vendaConvertida.getCliente() != null) venda.setCliente(vendaConvertida.getCliente());
+					if (vendaConvertida.getFormaPagamento() != null) venda.setFormaPagamento(vendaConvertida.getFormaPagamento());
+					if (vendaConvertida.getValorTotal() != null) venda.setValorTotal(vendaConvertida.getValorTotal());
 					
 					return vendas.save(venda);
 				})
@@ -156,5 +163,22 @@ public class VendaService {
 		venda.setValorTotal(dto.getValorTotal());
 		
 		return venda;
+	}
+	
+	/**
+	 * Faz a validação do cliente informado a partir do seu ID.
+	 * @param clienteID
+	 * @return Cliente
+	 */
+	private Cliente validarCliente(Integer clienteID) {
+		
+		Optional<Cliente> clienteProcurado = 
+				clientes.findById(clienteID);
+		
+		if (clienteProcurado.isEmpty()) {
+			throw new DomainException("Cliente inexistente. Verifique o ID deste Cliente para registrar a venda corretamente.");
+		}
+		
+		return clienteProcurado.get();
 	}
 }
