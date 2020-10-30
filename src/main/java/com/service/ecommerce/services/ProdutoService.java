@@ -115,7 +115,7 @@ public class ProdutoService {
 		Produto novoItem = converterProdutoDTOParaEntidade(novoProdutoDTO);
 		
 		return produtoRepository
-				.findById(novoItem.getId())
+				.findById(novoProdutoDTO.getId())
 				.map(prod -> {
 					
 					prod.setCategoria(novoItem.getCategoria());
@@ -180,7 +180,7 @@ public class ProdutoService {
 		Produto novoProduto = new Produto();
 		novoProduto.setCategoria(categoriaProcurada.get());
 		novoProduto.setMarca(marcaProcurada.get());
-		novoProduto.setCategoria(categoriaProcurada.get());
+		novoProduto.setFornecedor(fornecedorProcurado.get());
 		return novoProduto;
 	}
 
