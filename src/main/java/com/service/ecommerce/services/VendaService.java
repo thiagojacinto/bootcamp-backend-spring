@@ -1,5 +1,6 @@
 package com.service.ecommerce.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +13,11 @@ import com.service.ecommerce.DTO.VendaDTO;
 import com.service.ecommerce.exceptions.DomainException;
 import com.service.ecommerce.models.Cliente;
 import com.service.ecommerce.models.FormaPagamento;
+import com.service.ecommerce.models.ItensVenda;
 import com.service.ecommerce.models.Venda;
 import com.service.ecommerce.repositories.ClienteRepository;
 import com.service.ecommerce.repositories.FormaPagamentoRepository;
+import com.service.ecommerce.repositories.ItensVendaRepository;
 import com.service.ecommerce.repositories.VendaRepository;
 
 @Service
@@ -22,7 +25,8 @@ public class VendaService {
 	
 	@Autowired
 	private VendaRepository vendas;
-	
+	@Autowired
+	private ItensVendaRepository itens;
 	@Autowired
 	private FormaPagamentoRepository formas;
 	@Autowired
@@ -145,7 +149,21 @@ public class VendaService {
 			throw new DomainException("Cliente inexistente. Verifique o ID deste Cliente para registrar a venda corretamente.");
 		}
 		
+		List<ItensVenda> listaDeItensProcurada = new ArrayList<ItensVenda>();
+		
+		for (Integer itemID : dto.getItems()) {
+			Optional<ItensVenda> itemProcurado =
+					itens.findById(itemID);
+			
+			if (itemProcurado.isEmpty()) {
+				throw new DomainException("Item de Venda inexistente. Verifique o ID deste Item de Venda para registrar a venda corretamente.");
+			}
+			
+			listaDeItensProcurada.add(itemProcurado.get());
+		}
+		
 		Venda venda = new Venda();
+		venda.setItens(listaDeItensProcurada);
 		venda.setCliente(clienteProcurado.get());
 		venda.setFormaPagamento(formaPagamentoProcurada.get());
 		return venda;
@@ -160,7 +178,7 @@ public class VendaService {
 		
 		Venda venda = validarRelacionamentosVenda(dto);
 		
-		venda.setValorTotal(dto.getValorTotal());
+		venda.setValorTotal(1d);
 		
 		return venda;
 	}
