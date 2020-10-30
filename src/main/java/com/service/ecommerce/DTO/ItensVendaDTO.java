@@ -6,6 +6,7 @@ public class ItensVendaDTO {
 	private Integer produtoID;
 	private Integer vendaID;
 	private Double valorUnitario;
+	private Integer quantidade;
 	
 	public ItensVendaDTO() {}
 
@@ -14,10 +15,11 @@ public class ItensVendaDTO {
 	 * @param vendaID
 	 * @param valorUnitario
 	 */
-	public ItensVendaDTO(Integer produtoID, Integer vendaID, Double valorUnitario) {
+	public ItensVendaDTO(Integer produtoID, Integer vendaID, Double valorUnitario, Integer quantidade) {
 		this.produtoID = produtoID;
 		this.vendaID = vendaID;
 		this.valorUnitario = valorUnitario;
+		this.quantidade = quantidade;
 	}
 
 	/**
@@ -74,6 +76,18 @@ public class ItensVendaDTO {
 	 */
 	public void setValorUnitario(Double valorUnitario) {
 		this.valorUnitario = valorUnitario;
+	}
+	/**
+	 * @return the quantidade
+	 */
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+	/**
+	 * @param quantidade the quantidade to set
+	 */
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
 	}
 	
 }

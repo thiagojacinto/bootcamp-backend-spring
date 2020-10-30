@@ -24,6 +24,9 @@ public class ItensVenda {
 	private Integer id;
 	
 	@NotNull
+	private Integer quantidade;
+	
+	@NotNull
 	@ManyToOne
 	private Produto produto;
 	
@@ -41,10 +44,11 @@ public class ItensVenda {
 	 * @param venda
 	 * @param valorUnitario
 	 */
-	public ItensVenda(Produto produto, Venda venda, Double valorUnitario) {
+	public ItensVenda(Produto produto, Venda venda, Double valorUnitario, Integer quantidade) {
 		this.produto = produto;
 		this.venda = venda;
 		this.valorUnitario = valorUnitario;
+		this.quantidade = quantidade;
 	}
 
 	/**
@@ -102,6 +106,20 @@ public class ItensVenda {
 	public void setValorUnitario(Double valorUnitario) {
 		this.valorUnitario = valorUnitario;
 	}
+	
+	/**
+	 * @return the quantidade
+	 */
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	/**
+	 * @param quantidade the quantidade to set
+	 */
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
 
 	@Override
 	public int hashCode() {
@@ -135,6 +153,11 @@ public class ItensVenda {
 		if (id != null) {
 			builder.append("id = ");
 			builder.append(id);
+			builder.append(", ");
+		}
+		if (quantidade != null) {
+			builder.append("quantidade = ");
+			builder.append(quantidade);
 			builder.append(", ");
 		}
 		if (produto != null) {
