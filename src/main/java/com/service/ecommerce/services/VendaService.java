@@ -28,6 +28,8 @@ public class VendaService {
 	@Autowired
 	private ItensVendaRepository itens;
 	@Autowired
+	private ItensVendaService itemService;
+	@Autowired
 	private FormaPagamentoRepository formas;
 	@Autowired
 	private ClienteRepository clientes;
@@ -97,7 +99,13 @@ public class VendaService {
 		
 		Venda vendaConvertida = converterDTOparaVenda(vendaDTO);
 		
-		return vendas.save(vendaConvertida);
+		Venda novaVenda = vendas.save(vendaConvertida);
+		
+		novaVenda
+			.getItens()
+			.forEach( item -> itemService.registrarVenda( item.getId(), novaVenda.getId()) );
+		
+		return novaVenda;
 	}
 
 	
@@ -159,13 +167,19 @@ public class VendaService {
 				throw new DomainException("Item de Venda inexistente. Verifique o ID deste Item de Venda para registrar a venda corretamente.");
 			}
 			
+			if (itemProcurado.get().getVenda() != null) {
+				throw new DomainException("Item de Venda já registrado. Verifique o ID deste Item de Venda para registrar a venda corretamente.");
+			}
+			
 			listaDeItensProcurada.add(itemProcurado.get());
 		}
 		
 		Venda venda = new Venda();
-		venda.setItens(listaDeItensProcurada);
+		venda.getItens().addAll(listaDeItensProcurada);
 		venda.setCliente(clienteProcurado.get());
 		venda.setFormaPagamento(formaPagamentoProcurada.get());
+		
+		
 		return venda;
 	}
 	

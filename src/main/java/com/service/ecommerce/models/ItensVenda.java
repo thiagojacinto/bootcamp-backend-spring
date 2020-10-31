@@ -30,7 +30,6 @@ public class ItensVenda {
 	@ManyToOne
 	private Produto produto;
 	
-	@NotNull
 	@ManyToOne
 	private Venda venda;
 	

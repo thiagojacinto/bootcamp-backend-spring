@@ -67,7 +67,7 @@ public class Venda {
 	 */
 	protected Double calcularValorTotal() {
 		return this.itens.stream()
-				.reduce(0d, (parcial, item) -> parcial + item.getValorUnitario(), Double::sum);
+				.reduce(0d, (parcial, item) -> parcial + item.getValorUnitario()*item.getQuantidade(), Double::sum);
 	}
 
 	/**

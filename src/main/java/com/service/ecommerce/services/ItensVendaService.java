@@ -27,6 +27,31 @@ public class ItensVendaService {
 	private VendaRepository vendas;
 	
 	/**
+	 * Registra uma venda ao Item de Venda
+	 * @param itemID {@code Integer}
+	 * @param vendaID {@code Integer}
+	 */
+	public void registrarVenda(Integer itemID, Integer vendaID) {
+		
+		Optional<Venda> vendaProcurada = 
+				vendas.findById(vendaID);
+		
+		if (vendaProcurada.isEmpty()) {
+			throw new DomainException("Venda inexistente. Verifique o ID da Venda para registrar este Item.");
+		}
+		
+		Optional<ItensVenda> itemProcurado = 
+				itens.findById(itemID);
+		
+		if (itemProcurado.isEmpty()) {
+			throw new DomainException("Item de Venda inexistente. Verifique o ID para registrar este Item.");
+		}
+		
+		itemProcurado.get().setVenda(vendaProcurada.get());
+		itens.save(itemProcurado.get());
+	}
+	
+	/**
 	 * Lista os Itens da Venda por Produto
 	 * @param produtoID {@code Integer}
 	 * @return {@code Page<ItensVenda>}
@@ -121,16 +146,9 @@ public class ItensVendaService {
 			throw new DomainException("Produto inexistente. Verifique o ID do Produto para registrar este Item.");
 		}
 		
-		Optional<Venda> vendaProcurada = 
-				vendas.findById(dto.getVendaID());
-		
-		if (vendaProcurada.isEmpty()) {
-			throw new DomainException("Venda inexistente. Verifique o ID da Venda para registrar este Item.");
-		}
-		
 		ItensVenda itensVenda = new ItensVenda();
 		itensVenda.setProduto(produtoProcurado.get());
-		itensVenda.setVenda(vendaProcurada.get());
+		itensVenda.setValorUnitario(produtoProcurado.get().getPrecoUnitario());
 		
 		return itensVenda;
 		
@@ -140,7 +158,7 @@ public class ItensVendaService {
 		
 		ItensVenda itensVenda = this.validarRelacionamentos(dto);
 		
-		itensVenda.setValorUnitario(dto.getValorUnitario());
+		itensVenda.setQuantidade(dto.getQuantidade());
 		
 		return itensVenda;
 	}
