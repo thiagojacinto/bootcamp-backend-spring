@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.service.ecommerce.DTO.FaqDTO;
 import com.service.ecommerce.exceptions.DomainException;
 import com.service.ecommerce.models.FAQ;
 import com.service.ecommerce.models.Produto;
@@ -21,6 +22,49 @@ public class FAQService implements ServicoBase<FAQRepository, FAQ>{
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
+	/**
+	 * Alteração de FAQ via FaqDTO, reaproveitando a interface.
+	 * @param dto {@code FaqDTO}
+	 * @param faqID {@code Integer}
+	 * @return {@code FAQ}
+	 */
+	public FAQ alterarViaDTO(FaqDTO dto, Integer faqID) {
+		
+		FAQ convertida = converterFaqDTOParaEntidade(dto);
+		convertida.setId(faqID);
+		
+		return alterar(convertida);
+	}
+	
+	/**
+	 * Cadastro de FAQ via FaqDTO, reaproveitando a interface
+	 * @param dto {@code FaqDTO}
+	 * @return {@code FAQ}
+	 */
+	public FAQ cadastrarViaDTO(FaqDTO dto) {
+		
+		FAQ convertida = converterFaqDTOParaEntidade(dto);
+		
+		convertida.setDatahora(OffsetDateTime.now());
+		
+		return cadastrar(convertida);
+	}
+	
+	protected FAQ converterFaqDTOParaEntidade(FaqDTO dto) {
+		
+		Optional<Produto> produtoProcurado = produtoRepository.findById(dto.getProdutoID());
+		
+		if (produtoProcurado.isEmpty()) {
+			throw new DomainException("Produto inexistente. Verifique o ID do produto para registrar esta FAQ.");
+		}
+		
+		FAQ convertida = new FAQ();
+		convertida.setProduto(produtoProcurado.get());
+		convertida.setTexto(dto.getTexto());
+		
+		return convertida;
+	}
+
 	/**
 	 * Lista as FAQs a partir do Produto vinculado.
 	 * @param produtoID {@code Integer}
@@ -45,14 +89,6 @@ public class FAQService implements ServicoBase<FAQRepository, FAQ>{
 
 	@Override
 	public FAQ cadastrar(FAQ novoItem) {
-		
-		Optional<Produto> produtoProcurado = produtoRepository.findById(novoItem.getProduto().getId());
-		
-		if (produtoProcurado.isEmpty()) {
-			throw new DomainException("Produto inexistente. Verifique o ID do produto para registrar esta FAQ.");
-		}
-		
-		novoItem.setDatahora(OffsetDateTime.now());
 				
 		return faqRepository.save(novoItem);
 	}
@@ -82,5 +118,6 @@ public class FAQService implements ServicoBase<FAQRepository, FAQ>{
 		
 		faqRepository.deleteById(peloId);
 	}
+	
 	
 }

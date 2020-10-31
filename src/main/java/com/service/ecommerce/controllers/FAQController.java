@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.service.ecommerce.DTO.FaqDTO;
 import com.service.ecommerce.models.FAQ;
 import com.service.ecommerce.services.FAQService;
 
@@ -64,9 +65,9 @@ public class FAQController {
 	public FAQ adicionarNovaFAQ(
 			@Valid @RequestBody 
 			@ApiParam(value = "JSON de uma FAQ", required = true)
-			FAQ novaFAQ) {
+			FaqDTO novaFAQ) {
 		
-		return faqService.cadastrar(novaFAQ);
+		return faqService.cadastrarViaDTO(novaFAQ);
 	}
 	
 	@DeleteMapping(path = "/{faqID}")
@@ -88,11 +89,9 @@ public class FAQController {
 			Integer faqID,
 			@Valid @RequestBody 
 			@ApiParam(value = "JSON de uma FAQ", required = true)
-			FAQ faqAlterada) {
+			FaqDTO faqAlterada) {
 		
-		faqAlterada.setId(faqID);
-		
-		return faqService.alterar(faqAlterada);
+		return faqService.alterarViaDTO(faqAlterada, faqID);
 	}
 
 }
