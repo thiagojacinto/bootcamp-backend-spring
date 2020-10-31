@@ -1,6 +1,5 @@
 package com.service.ecommerce.controllers;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -8,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +36,7 @@ public class ProdutoController {
 	@GetMapping(path = "/preco/{ordem}")
 	@ApiOperation(value = "Lista os Produtos paginando e ordenando por preço unitário.")
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<Produto> listarProdutoPorPreco(
+	public Page<Produto> listarProdutoPorPreco(
 			@Valid @NotNull Integer pagina, 
 			@Valid @NotNull Integer itens, 
 			@ApiParam(value = "Ordenação, \"cresc\" para ordem crescente e \"dec\" ", example = "cresc", required = true, defaultValue = "dec")
@@ -49,11 +49,11 @@ public class ProdutoController {
 	@GetMapping(path = "/{filtro}/{id}")
 	@ApiOperation(value = "Lista os Produtos paginando e filtrando por Categoria, Marca ou Fornecedor")
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<Produto> filtrarProdutos(
+	public Page<Produto> filtrarProdutos(
 			@Valid @NotNull Integer pagina, 
 			@Valid @NotNull Integer itens,
-			@ApiParam(value = "Tipo de filtro: \"Categoria\", \"Fornecedor\"  ou \"Marca\".", example = "Marca", required = true, defaultValue = "Categoria")
-			@PathVariable @Valid @NotBlank 
+			@ApiParam(value = "Tipo de filtro: \"categoria\", \"fornecedor\"  ou \"marca\".", example = "marca", required = true, defaultValue = "categoria")
+			@PathVariable @NotBlank 
 			String filtro,
 			@ApiParam(value = "ID do filtro", example = "1", required = true, defaultValue = "1")
 			@PathVariable @NotNull 

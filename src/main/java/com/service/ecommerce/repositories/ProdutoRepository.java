@@ -1,7 +1,6 @@
 package com.service.ecommerce.repositories;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,26 +14,26 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 	 * @param pageable
 	 * @return
 	 */
-	List<Produto> findByOrderByPrecoUnitario(Pageable pageable);
+	Page<Produto> findByOrderByPrecoUnitarioAsc(Pageable pageable);
 	
 	/**
 	 * Lista de produtos por fornecedor, ordenado por fornecedor. Usa {@code Pageable}
 	 * @param fornecedorID
 	 * @return
 	 */
-	List<Produto> findAllByFornecedorIgnoreCaseOrderByFornecedor(Integer fornecedorID, Pageable pageable);
+	Page<Produto> findByFornecedor_IdOrderByFornecedor(Integer fornecedorID, Pageable pageable);
 	
 	/**
 	 * Lista de produtos por categoria, ordenado por categoria. Usa {@code Pageable}
 	 * @param categoriaID
 	 * @return
 	 */
-	List<Produto> findAllByCategoriaIgnoreCaseOrderByCategoria(Integer categoriaID, Pageable pageable);
+	Page<Produto> findByCategoria_IdOrderByCategoria(Integer categoriaID, Pageable pageable);
 	
 	/**
 	 *  Lista de produtos por marca, ordenado por marca. Usa {@code Pageable}
 	 * @param marcaID
 	 * @return
 	 */
-	List<Produto> findAllByMarcaIgnoreCaseOrderByMarca(Integer marcaID, Pageable pageable);
+	Page<Produto> findByMarca_IdOrderByMarca(Integer marcaID, Pageable pageable);
 }
