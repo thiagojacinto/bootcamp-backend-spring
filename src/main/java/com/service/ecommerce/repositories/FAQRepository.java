@@ -13,5 +13,5 @@ public interface FAQRepository extends CrudRepository<FAQ, Integer> {
 	 * @param produtoId
 	 * @return {@code List<FAQ>}
 	 */
-	public List<FAQ> findByProduto(Integer produtoId);
+	public List<FAQ> findByProduto_Id(Integer produtoId);
 }

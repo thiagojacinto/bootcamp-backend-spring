@@ -28,7 +28,7 @@ public class FAQService implements ServicoBase<FAQRepository, FAQ>{
 	 */
 	public List<FAQ> listarPorProduto(Integer produtoID) {
 		
-		return faqRepository.findByProduto(produtoID);
+		return faqRepository.findByProduto_Id(produtoID);
 	}
 
 	@Override
