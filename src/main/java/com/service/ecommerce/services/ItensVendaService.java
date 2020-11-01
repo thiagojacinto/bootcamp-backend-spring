@@ -81,11 +81,12 @@ public class ItensVendaService {
 	
 	/**
 	 * Lista com Todos os Itens de Venda, paginados de 10 em 10.
+	 * @param pagina {@code Integer}
 	 * @return {@code Page<ItensVenda>} com 10 itens por página.
 	 */
-	public Iterable<ItensVenda> listarTodos() {
+	public Iterable<ItensVenda> listarTodos(Integer pagina) {
 	
-		return itens.findAll(PageRequest.of(0, 10));
+		return itens.findAll(PageRequest.of(pagina, 10));
 	}
 
 	

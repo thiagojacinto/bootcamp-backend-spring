@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,10 +56,15 @@ public class ItensVendaController {
 	}
 	
 	@GetMapping
-	@ApiOperation(value = "Lista todos os Itens de Venda")
+	@ApiOperation(value = "Lista todos os Itens de Venda, de 10 em 10 itens.")
 	@ResponseStatus(code = HttpStatus.OK)
-	public Iterable<ItensVenda> listarItensVendas() {
-		return itensService.listarTodos();
+	public Iterable<ItensVenda> listarItensVendas(
+			@ApiParam(value = "Número da página, contendo 10 itens.", example = "0", defaultValue = "0")
+			@RequestParam(defaultValue = "0") @DefaultValue(value = "0") Integer pagina) {
+		
+		if (pagina == null) pagina = 0;
+		
+		return itensService.listarTodos(pagina);
 	}
 		
 	@GetMapping(path = "/{itemID}")
