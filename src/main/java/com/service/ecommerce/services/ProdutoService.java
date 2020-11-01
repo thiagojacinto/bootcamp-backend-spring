@@ -1,9 +1,9 @@
 package com.service.ecommerce.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -41,7 +41,7 @@ public class ProdutoService {
 	 * @param ordem, sendo "cresc" para ordem crescente; e "dec" para decrescente.
 	 * @return {@code List<Produto>}
 	 */
-	public List<Produto> listarOrdenandoPorPreco(Integer pagina, Integer itens, String ordem) {
+	public Page<Produto> listarOrdenandoPorPreco(Integer pagina, Integer itens, String ordem) {
 		
 		Sort sorting = Sort.unsorted();
 		
@@ -54,7 +54,7 @@ public class ProdutoService {
 		
 		Pageable paginacao = PageRequest.of(pagina, itens, sorting);
 		
-		return produtoRepository.findByOrderByPrecoUnitario(paginacao);
+		return produtoRepository.findByOrderByPrecoUnitarioAsc(paginacao);
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class ProdutoService {
 	 * @param id
 	 * @return {@code List<Produto>}
 	 */
-	public List<Produto> listaFiltrada(Integer paginas, Integer itens, String filtro, Integer id) {
+	public Page<Produto> listaFiltrada(Integer paginas, Integer itens, String filtro, Integer id) {
 		
 		Pageable paginacao = PageRequest.of(paginas, itens);
 		
@@ -73,15 +73,15 @@ public class ProdutoService {
 		
 		case "fornecedor":
 			
-			return produtoRepository.findAllByFornecedorIgnoreCaseOrderByFornecedor(id, paginacao);
+			return produtoRepository.findByFornecedor_IdOrderByFornecedor(id, paginacao);
 
 		case "categoria":
 			
-			return produtoRepository.findAllByCategoriaIgnoreCaseOrderByCategoria(id, paginacao);
+			return produtoRepository.findByCategoria_IdOrderByCategoria(id, paginacao);
 			
 		case "marca":
 			
-			return produtoRepository.findAllByMarcaIgnoreCaseOrderByMarca(id, paginacao);
+			return produtoRepository.findByMarca_IdOrderByMarca(id, paginacao);
 
 		default:
 			return null;
@@ -115,7 +115,7 @@ public class ProdutoService {
 		Produto novoItem = converterProdutoDTOParaEntidade(novoProdutoDTO);
 		
 		return produtoRepository
-				.findById(novoItem.getId())
+				.findById(novoProdutoDTO.getId())
 				.map(prod -> {
 					
 					prod.setCategoria(novoItem.getCategoria());
@@ -180,7 +180,7 @@ public class ProdutoService {
 		Produto novoProduto = new Produto();
 		novoProduto.setCategoria(categoriaProcurada.get());
 		novoProduto.setMarca(marcaProcurada.get());
-		novoProduto.setCategoria(categoriaProcurada.get());
+		novoProduto.setFornecedor(fornecedorProcurado.get());
 		return novoProduto;
 	}
 

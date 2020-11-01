@@ -1,11 +1,14 @@
 package com.service.ecommerce.DTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VendaDTO {
 	
 	private Integer id;
-	private Double valorTotal;
 	private Integer clienteID;
 	private Integer formaPagamentoID;
+	private List<Integer> items = new ArrayList<Integer>();
 	
 	public VendaDTO() {}
 
@@ -14,8 +17,8 @@ public class VendaDTO {
 	 * @param clienteID
 	 * @param formaPagamentoID
 	 */
-	public VendaDTO(Integer clienteID, Integer formaPagamentoID, Double valorTotal) {
-		this.valorTotal = valorTotal;
+	public VendaDTO(Integer clienteID, Integer formaPagamentoID, Integer itemID) {
+		this.items.add(itemID);
 		this.clienteID = clienteID;
 		this.formaPagamentoID = formaPagamentoID;
 	}
@@ -32,20 +35,6 @@ public class VendaDTO {
 	 */
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	/**
-	 * @return the valorTotal
-	 */
-	public Double getValorTotal() {
-		return valorTotal;
-	}
-
-	/**
-	 * @param valorTotal the valorTotal to set
-	 */
-	public void setValorTotal(Double valorTotal) {
-		this.valorTotal = valorTotal;
 	}
 
 	/**
@@ -74,6 +63,20 @@ public class VendaDTO {
 	 */
 	public void setFormaPagamentoID(Integer formaPagamentoID) {
 		this.formaPagamentoID = formaPagamentoID;
+	}
+
+	/**
+	 * @return the items
+	 */
+	public List<Integer> getItems() {
+		return items;
+	}
+
+	/**
+	 * @param itemsIDList the items to set
+	 */
+	public void setItems(List<Integer> items) {
+		this.items = items;
 	}
 	
 }
