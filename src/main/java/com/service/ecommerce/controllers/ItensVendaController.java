@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(path = "/v1/items")
+@RequestMapping(path = "/v1/itens")
 public class ItensVendaController {
 	
 	@Autowired
