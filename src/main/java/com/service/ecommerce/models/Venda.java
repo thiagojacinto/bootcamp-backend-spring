@@ -1,15 +1,28 @@
 package com.service.ecommerce.models;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "id")
 public class Venda {
 
 	@Id
@@ -29,6 +42,10 @@ public class Venda {
 	@ManyToOne
 	private FormaPagamento formaPagamento;
 	
+	@OneToMany(mappedBy = "venda", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<ItensVenda> itens = new ArrayList<ItensVenda>();
+	
 	public Venda() {}
 
 	/**
@@ -37,11 +54,20 @@ public class Venda {
 	 * @param valorTotal
 	 */
 	public Venda(Cliente cliente,
-			 FormaPagamento formaPagamento, Double valorTotal) {
+			 FormaPagamento formaPagamento) {
 		this.datahora = OffsetDateTime.now();
-		this.valorTotal = valorTotal;
+		this.valorTotal = this.calcularValorTotal();
 		this.cliente = cliente;
 		this.formaPagamento = formaPagamento;
+	}
+	
+	/**
+	 * Calcular o valor total a partir da lista de itens.
+	 * @return valor total {@code Double}
+	 */
+	protected Double calcularValorTotal() {
+		return this.itens.stream()
+				.reduce(0d, (parcial, item) -> parcial + item.getValorUnitario()*item.getQuantidade(), Double::sum);
 	}
 
 	/**
@@ -76,13 +102,14 @@ public class Venda {
 	 * @return the valorTotal
 	 */
 	public Double getValorTotal() {
-		return valorTotal;
+		return calcularValorTotal();
 	}
 
 	/**
 	 * @param valorTotal the valorTotal to set
 	 */
 	public void setValorTotal(Double valorTotal) {
+		valorTotal = calcularValorTotal();
 		this.valorTotal = valorTotal;
 	}
 
@@ -112,6 +139,20 @@ public class Venda {
 	 */
 	public void setFormaPagamento(FormaPagamento formaPagamento) {
 		this.formaPagamento = formaPagamento;
+	}
+
+	/**
+	 * @return the itens
+	 */
+	public List<ItensVenda> getItens() {
+		return itens;
+	}
+
+	/**
+	 * @param itens the itens to set
+	 */
+	public void setItens(List<ItensVenda> itens) {
+		this.itens = itens;
 	}
 
 	@Override

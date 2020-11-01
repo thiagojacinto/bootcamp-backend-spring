@@ -1,15 +1,29 @@
 package com.service.ecommerce.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "id")
 public class Produto {
 	
 	@Id
@@ -21,6 +35,7 @@ public class Produto {
 	@Size(max = 200)
 	private String nome;
 	private String descricao;
+	@NotNull
 	private Double precoUnitario;
 	
 	@Size(max = 20)
@@ -32,6 +47,10 @@ public class Produto {
 	private Fornecedor fornecedor;
 	@ManyToOne
 	private Marca marca;
+	
+	@OneToMany(mappedBy = "produto", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<FAQ> faqs = new ArrayList<FAQ>();
 	
 	public Produto() {}
 
@@ -158,6 +177,20 @@ public class Produto {
 		this.marca = marca;
 	}
 
+	/**
+	 * @return the faqs
+	 */
+	public List<FAQ> getFaqs() {
+		return faqs;
+	}
+
+	/**
+	 * @param faqs the faqs to set
+	 */
+	public void setFaqs(List<FAQ> faqs) {
+		this.faqs = faqs;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -225,9 +258,16 @@ public class Produto {
 		if (marca != null) {
 			builder.append("marca = ");
 			builder.append(marca);
+			builder.append(", ");
+		}
+		if (faqs != null) {
+			builder.append("FAQ = ");
+			builder.append(faqs);
 		}
 		builder.append("]");
 		return builder.toString();
 	}
+
+	
 	
 }
