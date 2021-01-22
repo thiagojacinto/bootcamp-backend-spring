@@ -24,6 +24,7 @@ public class EcommerceApplication {
 					.allowedOrigins("http://localhost:4200")
 					.allowedMethods("*");
 				
+				// to heroku allow connections from netlify
 				registry.addMapping("/v1/**")
 					.allowedOrigins("https://dot-store-angular.netlify.app/")
 					.allowedMethods("*");
