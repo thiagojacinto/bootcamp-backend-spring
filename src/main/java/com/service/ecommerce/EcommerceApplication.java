@@ -26,7 +26,7 @@ public class EcommerceApplication {
 				
 				// to heroku allow connections from netlify
 				registry.addMapping("/v1/**")
-					.allowedOrigins("https://dot-store-angular.netlify.app/")
+					.allowedOrigins("https://dot-store-angular.netlify.app")
 					.allowedMethods("*");
 				
 				registry.addMapping("/swagger-ui/**")
